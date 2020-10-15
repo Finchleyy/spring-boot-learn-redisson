@@ -1,4 +1,4 @@
-package com.ypw.springbootlearnredisson.config;
+package com.ypw.redissonserviceone.config;
 
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -26,7 +26,6 @@ public class RedissonConfig {
                         "redis://192.168.100.107:7005",
                         "redis://192.168.100.107:7006")
                 .setPassword("123456");
-        RedissonClient redisson = Redisson.create(config);
-        return redisson;
+        return Redisson.create(config);
     }
 }
