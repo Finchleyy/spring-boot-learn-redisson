@@ -16,7 +16,6 @@ public class LockTask {
     @Autowired
     RedissonClient redissonClient;
 
-
     @Scheduled(cron = "0 * * * * ?")
     //或直接指定时间间隔，例如：5秒
     //@Scheduled(fixedRate=5000)
@@ -24,29 +23,18 @@ public class LockTask {
         System.err.println("执行静态定时任务时间: " + LocalDateTime.now());
         RLock lock = redissonClient.getLock("someThreadTest");
 
-        new Thread(() -> {
-            try {
-                lock.lock();
-                System.out.println(Thread.currentThread().getName() + "线程获取到锁🔐开始执行业务.....");
-                Thread.sleep(10000);
-                lock.unlock();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println(Thread.currentThread().getName() + "线程执行完毕.....");
-        }).start();
-
-        new Thread(() -> {
-            try {
-                lock.lock();
-                System.out.println(Thread.currentThread().getName() + "线程获取到锁🔐开始执行业务.....");
-                Thread.sleep(1000);
-                lock.unlock();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println(Thread.currentThread().getName() + "线程执行完毕.....");
-        }).start();
-
+        for (int i = 0; i < 10; i++) {
+            new Thread(() -> {
+                try {
+                    lock.lock();
+                    System.out.println(Thread.currentThread().getName() + "线程获取到锁🔐开始执行业务.....");
+                    Thread.sleep(5000);
+                    lock.unlock();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(Thread.currentThread().getName() + "线程执行完毕.....");
+            }).start();
+        }
     }
 }
