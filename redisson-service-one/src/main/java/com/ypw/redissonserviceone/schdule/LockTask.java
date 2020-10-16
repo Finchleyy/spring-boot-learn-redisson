@@ -21,7 +21,7 @@ public class LockTask {
     //@Scheduled(fixedRate=5000)
     private void configureTasks() {
         System.err.println("执行静态定时任务时间: " + LocalDateTime.now());
-        RLock lock = redissonClient.getLock("someThreadTest");
+        RLock lock = redissonClient.getFairLock("someThreadTest");
 
         for (int i = 0; i < 10; i++) {
             new Thread(() -> {
